@@ -67,10 +67,10 @@ app.get('/info', (req, res) => {
 
 app.get('/persons/:id', (request, response) => {
   const id = Number(request.params.id)
-  const note = notes.find(note => note.id === id)
+  const person = persons.find(person => person.id === id)
   
-  if (note) {
-    response.json(note)
+  if (person) {
+    response.json(person)
   } else {
     response.status(404).end()
   }
