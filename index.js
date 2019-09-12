@@ -50,12 +50,19 @@ let persons = [
   }
 ]
 
+const info = `<p>Phonebook has info for ${persons.length} people</p>
+              <p>${new Date()}</p>`
+
 app.get('/', (req, res) => {
   res.send('<h1>Hello Finland!</h1>')
 })
 
 app.get('/persons', (req, res) => {
   res.json(persons)
+})
+
+app.get('/info', (req, res) => {
+  res.send(info)
 })
 
 const port = 3001
