@@ -1,10 +1,64 @@
-const http = require('http')
+//const http = require('http')
+const express = require('express')
+const app = express()
 
-const app = http.createServer((req, res) => {
-  res.writeHead(200, { 'Content-Type': 'text/plain' })
-  res.end('Hello World')
+let persons = [
+  {
+    "name": "Arto Hellas",
+    "number": "040-123456",
+    "id": 1
+  },
+  {
+    "name": "Ada Lovelace",
+    "number": "39-44-5323523",
+    "id": 2
+  },
+  {
+    "name": "Dan Abramov",
+    "number": "12-43-234345",
+    "id": 3
+  },
+  {
+    "name": "Miika-Masa",
+    "number": "7890",
+    "id": 8
+  },
+  {
+    "name": "Jami-Jaska",
+    "number": "020202",
+    "id": 9
+  },
+  {
+    "name": "Jimmy",
+    "number": "999-999",
+    "id": 10
+  },
+  {
+    "name": "Jummi Jammi",
+    "number": "002",
+    "id": 11
+  },
+  {
+    "name": "Co Co Cola",
+    "number": "90",
+    "id": 14
+  },
+  {
+    "name": "James B",
+    "number": "9080808",
+    "id": 15
+  }
+]
+
+app.get('/', (req, res) => {
+  res.send('<h1>Hello Finland!</h1>')
+})
+
+app.get('/persons', (req, res) => {
+  res.json(persons)
 })
 
 const port = 3001
-app.listen(port)
-console.log(`Server running on port ${port}`)
+app.listen(port, () => {
+  console.log(`Server running on port ${port}`)
+})

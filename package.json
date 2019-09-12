@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start": "node index.js",
+    "watch": "nodemon index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -16,5 +17,11 @@
   "bugs": {
     "url": "https://github.com/iihoo/FullStackOpen2019-part3-notes-backend/issues"
   },
-  "homepage": "https://github.com/iihoo/FullStackOpen2019-part3-notes-backend#readme"
+  "homepage": "https://github.com/iihoo/FullStackOpen2019-part3-notes-backend#readme",
+  "dependencies": {
+    "express": "^4.17.1"
+  },
+  "devDependencies": {
+    "nodemon": "^1.19.2"
+  }
 }
