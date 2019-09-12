@@ -1,6 +1,7 @@
 //const http = require('http')
 const express = require('express')
 const app = express()
+const bodyParser = require('body-parser')
 
 let persons = [
   {
@@ -53,6 +54,14 @@ let persons = [
 const info = `<p>Phonebook has info for ${persons.length} people</p>
               <p>${new Date()}</p>`
 
+const generateId = () => {
+  const generatedId = Math.round(100000 * Math.random())
+  //console.log(generatedId)
+  return generatedId
+}
+
+app.use(bodyParser.json())
+
 app.get('/', (req, res) => {
   res.send('<h1>Hello Finland!</h1>')
 })
@@ -81,6 +90,32 @@ app.delete('/persons/:id', (request, response) => {
   persons = persons.filter(person => person.id !== id)
 
   response.status(204).end()
+})
+
+app.post('/persons', (request, response) => {
+  const body = request.body
+
+  if (!body.name) {
+    return response.status(400).json({
+      error: 'name missing'
+    })
+  }
+
+  if (!body.number) {
+    return response.status(400).json({
+      error: 'number missing'
+    })
+  }
+
+  const person = {
+    name: body.name,
+    number: body.number,
+    id: generateId()
+  }
+
+  persons = persons.concat(person)
+
+  response.json(person)
 })
 
 const port = 3001
