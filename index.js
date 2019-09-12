@@ -107,6 +107,15 @@ app.post('/persons', (request, response) => {
     })
   }
 
+  names = persons.map(person => person.name)
+  //console.log(names)
+  //console.log('body.name: ' + body.name)
+  if (names.includes(body.name)) {
+    return response.status(400).json({
+      error: 'name must be unique'
+    })
+  }
+
   const person = {
     name: body.name,
     number: body.number,
