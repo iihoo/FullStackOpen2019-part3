@@ -51,14 +51,20 @@ let persons = [
   }
 ]
 
+morgan.token('person', function getPerson(req) {
+  return req.person
+})
+
 app.use(bodyParser.json())
-app.use(morgan('tiny'))
+app.use(assignPerson)
+app.use(morgan(':method :url :status :res[content-length] - :response-time ms :person'))
+//app.use(morgan('tiny'))
 
 app.get('/', (req, res) => {
   res.send('<h1>Welcome to phonebook!</h1>')
 })
 
-app.get('/persons', (req, res) => {
+app.get('/api/persons', (req, res) => {
   res.json(persons)
 })
 
@@ -66,9 +72,9 @@ app.get('/info', (req, res) => {
   res.send(info)
 })
 
-app.get('/persons/:id', (request, response) => {
+app.get('/api/persons/:id', (request, response) => {
   const id = Number(request.params.id)
-  const persons = persons.find(person => person.id === id)
+  const person = persons.find(person => person.id === id)
 
   if (person) {
     response.json(person)
@@ -77,14 +83,14 @@ app.get('/persons/:id', (request, response) => {
   }
 })
 
-app.delete('/persons/:id', (request, response) => {
+app.delete('/api/persons/:id', (request, response) => {
   const id = Number(request.params.id)
   persons = persons.filter(person => person.id !== id)
 
   response.status(204).end()
 })
 
-app.post('/persons', (request, response) => {
+app.post('/api/persons', (request, response) => {
   const body = request.body
 
   if (!body.name) {
@@ -118,6 +124,16 @@ app.post('/persons', (request, response) => {
 
   response.json(person)
 })
+
+function assignPerson(req, res, next) {
+  const person = JSON.stringify(req.body) 
+  if (person.length === 2){
+    req.person = ""
+  } else {
+    req.person = person
+  }
+  next()
+}
 
 const info = `<p>Phonebook has info for ${persons.length} people</p>
               <p>${new Date()}</p>`
