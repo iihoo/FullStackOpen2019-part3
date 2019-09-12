@@ -1,7 +1,7 @@
-//const http = require('http')
 const express = require('express')
 const app = express()
 const bodyParser = require('body-parser')
+const morgan = require('morgan')
 
 let persons = [
   {
@@ -51,19 +51,11 @@ let persons = [
   }
 ]
 
-const info = `<p>Phonebook has info for ${persons.length} people</p>
-              <p>${new Date()}</p>`
-
-const generateId = () => {
-  const generatedId = Math.round(100000 * Math.random())
-  //console.log(generatedId)
-  return generatedId
-}
-
 app.use(bodyParser.json())
+app.use(morgan('tiny'))
 
 app.get('/', (req, res) => {
-  res.send('<h1>Hello Finland!</h1>')
+  res.send('<h1>Welcome to phonebook!</h1>')
 })
 
 app.get('/persons', (req, res) => {
@@ -77,7 +69,7 @@ app.get('/info', (req, res) => {
 app.get('/persons/:id', (request, response) => {
   const id = Number(request.params.id)
   const persons = persons.find(person => person.id === id)
-  
+
   if (person) {
     response.json(person)
   } else {
@@ -126,6 +118,14 @@ app.post('/persons', (request, response) => {
 
   response.json(person)
 })
+
+const info = `<p>Phonebook has info for ${persons.length} people</p>
+              <p>${new Date()}</p>`
+
+const generateId = () => {
+  const generatedId = Math.round(100000 * Math.random())
+  return generatedId
+}
 
 const port = 3001
 app.listen(port, () => {
