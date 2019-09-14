@@ -6,7 +6,7 @@ This repository also includes the build version of the front end for the phonebo
 
 You can use the following routes in addition to the main application at the home page:
 
-hhtps://secret-castle-09186.herokuapp.com/info
+https://secret-castle-09186.herokuapp.com/info
 - this page show some general info about the phonebook
 
 https://secret-castle-09186.herokuapp.com/api/persons
