@@ -1,4 +1,4 @@
-post http://localhost:3001/api/persons
+post http://localhost:3001/persons
 Content-Type: application/json
 
 {
