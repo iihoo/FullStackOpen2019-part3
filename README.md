@@ -1,6 +1,6 @@
 The phonebook application is deployed to heroku at https://secret-castle-09186.herokuapp.com/
 
-This repository is intended as the backend for the phonebook application from part 2 of the Full Stack Open 2019 course (https://github.com/iihoo/FullStackOpen2019/tree/master/exercises/osa2/puhelinluettelo).
+This repository was developed as the backend for the phonebook application from part 2 of the Full Stack Open 2019 course (https://github.com/iihoo/FullStackOpen2019/tree/master/exercises/osa2/puhelinluettelo).
 
 This repository also includes the build version of the front end for the phonebook application.
 
