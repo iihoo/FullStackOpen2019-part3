@@ -58,12 +58,12 @@ morgan.token('person', function getPerson(req) {
   return req.person
 })
 
+app.use(express.static('build'))
 app.use(bodyParser.json())
 app.use(assignPerson)
 app.use(morgan(':method :url :status :res[content-length] - :response-time ms :person'))
 //app.use(morgan('tiny'))
 app.use(cors())
-app.use(express.static('build'))
 
 app.get('/', (req, res) => {
   res.send('<h1>Welcome to phonebook!</h1>')
@@ -79,22 +79,24 @@ app.get('/info', (req, res) => {
   res.send(info)
 })
 
-app.get('/api/persons/:id', (request, response) => {
-  const id = Number(request.params.id)
-  const person = persons.find(person => person.id === id)
-
-  if (person) {
-    response.json(person)
-  } else {
-    response.status(404).end()
-  }
+app.get('/api/persons/:id', (request, response, next) => {
+  Person.findById(request.params.id)
+    .then(person => {
+      if (person) {
+        response.json(person.toJSON())
+      } else {
+        response.status(404).end()
+      }
+    })
+    .catch(error => next(error))
 })
 
-app.delete('/api/persons/:id', (request, response) => {
-  const id = Number(request.params.id)
-  persons = persons.filter(person => person.id !== id)
-
-  response.status(204).end()
+app.delete('/api/persons/:id', (request, response, next) => {
+  Person.findByIdAndRemove(request.params.id)
+    .then(result => {
+      response.status(204).end()
+    })
+    .catch(error => next(error))
 })
 
 app.post('/api/persons', (request, response) => {
@@ -112,13 +114,6 @@ app.post('/api/persons', (request, response) => {
     })
   }
 
-  //names = persons.map(person => person.name)
-  //if (names.includes(body.name)) {
-  //  return response.status(400).json({
-  //    error: 'name must be unique'
-  //  })
-  //}
-
   const person = new Person({
     name: body.name,
     number: body.number,
@@ -127,9 +122,27 @@ app.post('/api/persons', (request, response) => {
   person.save().then(savedPerson => {
     response.json(savedPerson.toJSON())
   })
-  //persons = persons.concat(person)
-  //response.json(person)
 })
+
+const unknownEndpoint = (request, response) => {
+  response.status(404).send({ error: 'unknown endpoint' })
+}
+
+// olemattomien osoitteiden käsittely
+app.use(unknownEndpoint)
+
+const errorHandler = (error, request, response, next) => {
+  console.error(error.message)
+
+  if (error.name === 'CastError' && error.kind == 'ObjectId') {
+    return response.status(400).send({ error: 'malformatted id' })
+  }
+
+  next(error)
+}
+
+// virheellisten pyyntöjen käsittely
+app.use(errorHandler)
 
 function assignPerson(req, res, next) {
   const person = JSON.stringify(req.body)
