@@ -15,7 +15,6 @@ mongoose.connect(url, { useNewUrlParser: true })
 const personSchema = new mongoose.Schema({
     name: String,
     number: String,
-    id: Number,
 })
 
 const Person = mongoose.model('Person', personSchema)
@@ -33,12 +32,10 @@ if (process.argv.length === 3) {
 
 const newName = process.argv[3]
 const newNumber = process.argv[4]
-const generatedId = Math.round(100000 * Math.random())
 
 const person = new Person({
     name: newName,
     number: newNumber,
-    id: generatedId,
 })
 
 person.save().then(response => {

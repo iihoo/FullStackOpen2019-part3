@@ -1,8 +1,10 @@
+require('dotenv').config()
 const express = require('express')
 const app = express()
 const bodyParser = require('body-parser')
 const morgan = require('morgan')
 const cors = require('cors')
+const Person = require('./models/person')
 
 let persons = [
   //{
@@ -68,7 +70,9 @@ app.get('/', (req, res) => {
 })
 
 app.get('/api/persons', (req, res) => {
-  res.json(persons)
+  Person.find({}).then(persons => {
+    res.json(persons.map(person => person.toJSON()))
+  })
 })
 
 app.get('/info', (req, res) => {
@@ -108,29 +112,28 @@ app.post('/api/persons', (request, response) => {
     })
   }
 
-  names = persons.map(person => person.name)
-  //console.log(names)
-  //console.log('body.name: ' + body.name)
-  if (names.includes(body.name)) {
-    return response.status(400).json({
-      error: 'name must be unique'
-    })
-  }
+  //names = persons.map(person => person.name)
+  //if (names.includes(body.name)) {
+  //  return response.status(400).json({
+  //    error: 'name must be unique'
+  //  })
+  //}
 
-  const person = {
+  const person = new Person({
     name: body.name,
     number: body.number,
-    id: generateId()
-  }
+  })
 
-  persons = persons.concat(person)
-
-  response.json(person)
+  person.save().then(savedPerson => {
+    response.json(savedPerson.toJSON())
+  })
+  //persons = persons.concat(person)
+  //response.json(person)
 })
 
 function assignPerson(req, res, next) {
-  const person = JSON.stringify(req.body) 
-  if (person.length === 2){
+  const person = JSON.stringify(req.body)
+  if (person.length === 2) {
     req.person = ""
   } else {
     req.person = person
@@ -141,12 +144,7 @@ function assignPerson(req, res, next) {
 const info = `<p>Phonebook has info for ${persons.length} people</p>
               <p>${new Date()}</p>`
 
-const generateId = () => {
-  const generatedId = Math.round(100000 * Math.random())
-  return generatedId
-}
-
-const PORT = process.env.PORT || 3001
+const PORT = process.env.PORT
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`)
 })
