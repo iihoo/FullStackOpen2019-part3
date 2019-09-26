@@ -5,51 +5,51 @@ const morgan = require('morgan')
 const cors = require('cors')
 
 let persons = [
-  {
-    "name": "Arto Hellas",
-    "number": "040-123456",
-    "id": 1
-  },
-  {
-    "name": "Ada Lovelace",
-    "number": "39-44-5323523",
-    "id": 2
-  },
-  {
-    "name": "Dan Abramov",
-    "number": "12-43-234345",
-    "id": 3
-  },
-  {
-    "name": "Miika-Masa",
-    "number": "7890",
-    "id": 8
-  },
-  {
-    "name": "Jami-Jaska",
-    "number": "020202",
-    "id": 9
-  },
-  {
-    "name": "Jimmy",
-    "number": "999-999",
-    "id": 10
-  },
-  {
-    "name": "Jummi Jammi",
-    "number": "002",
-    "id": 11
-  },
-  {
-    "name": "Co Co Cola",
-    "number": "90",
-    "id": 14
-  },
-  {
-    "name": "James B",
-    "number": "9080808",
-    "id": 15
-  }
+  //{
+  //  "name": "Arto Hellas",
+  //  "number": "040-123456",
+  //  "id": 1
+  //},
+  //{
+  //  "name": "Ada Lovelace",
+  //  "number": "39-44-5323523",
+  //  "id": 2
+  //},
+  //{
+  //  "name": "Dan Abramov",
+  //  "number": "12-43-234345",
+  //  "id": 3
+  //},
+  //{
+  //  "name": "Miika-Masa",
+  //  "number": "7890",
+  //  "id": 8
+  //},
+  //{
+  //  "name": "Jami-Jaska",
+  //  "number": "020202",
+  //  "id": 9
+  //},
+  //{
+  //  "name": "Jimmy",
+  //  "number": "999-999",
+  //  "id": 10
+  //},
+  //{
+  //  "name": "Jummi Jammi",
+  //  "number": "002",
+  //  "id": 11
+  //},
+  //{
+  //  "name": "Co Co Cola",
+  //  "number": "90",
+  //  "id": 14
+  //},
+  //{
+  //  "name": "James B",
+  //  "number": "9080808",
+  //  "id": 15
+  //}
 ]
 
 morgan.token('person', function getPerson(req) {

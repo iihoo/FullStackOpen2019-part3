@@ -9,9 +9,8 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "build:ui": "rm -rf build && cd ../FullStackOpen2019/exercises/osa2/puhelinluettelo && npm run build --prod && cp -r build ../../../../FullStackOpen2019-part3-phonebook-backend",
     "deploy": "git push heroku master",
-    "deploy:full": "npm run build:ui && git add . && git commit -m uibuild && git push origin master && npm run deploy",    
-    "logs:prod": "heroku logs --tail" 
-  
+    "deploy:full": "npm run build:ui && git add . && git commit -m uibuild && git push origin master && npm run deploy",
+    "logs:prod": "heroku logs --tail"
   },
   "repository": {
     "type": "git",
@@ -26,6 +25,7 @@
   "dependencies": {
     "cors": "^2.8.5",
     "express": "^4.17.1",
+    "mongoose": "^5.7.1",
     "morgan": "^1.9.1"
   },
   "devDependencies": {
