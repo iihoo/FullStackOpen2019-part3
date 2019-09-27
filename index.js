@@ -76,7 +76,10 @@ app.get('/api/persons', (req, res) => {
 })
 
 app.get('/info', (req, res) => {
-  res.send(info)
+  Person.countDocuments({}).then(count => {
+    res.send(`<p>Phonebook has info for ${count} people</p>
+              <p>${new Date()}</p>`)
+  })
 })
 
 app.get('/api/persons/:id', (request, response, next) => {
@@ -168,9 +171,6 @@ function assignPerson(req, res, next) {
   }
   next()
 }
-
-const info = `<p>Phonebook has info for ${persons.length} people</p>
-              <p>${new Date()}</p>`
 
 const PORT = process.env.PORT
 app.listen(PORT, () => {
