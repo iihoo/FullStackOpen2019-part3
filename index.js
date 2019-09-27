@@ -6,54 +6,6 @@ const morgan = require('morgan')
 const cors = require('cors')
 const Person = require('./models/person')
 
-let persons = [
-  //{
-  //  "name": "Arto Hellas",
-  //  "number": "040-123456",
-  //  "id": 1
-  //},
-  //{
-  //  "name": "Ada Lovelace",
-  //  "number": "39-44-5323523",
-  //  "id": 2
-  //},
-  //{
-  //  "name": "Dan Abramov",
-  //  "number": "12-43-234345",
-  //  "id": 3
-  //},
-  //{
-  //  "name": "Miika-Masa",
-  //  "number": "7890",
-  //  "id": 8
-  //},
-  //{
-  //  "name": "Jami-Jaska",
-  //  "number": "020202",
-  //  "id": 9
-  //},
-  //{
-  //  "name": "Jimmy",
-  //  "number": "999-999",
-  //  "id": 10
-  //},
-  //{
-  //  "name": "Jummi Jammi",
-  //  "number": "002",
-  //  "id": 11
-  //},
-  //{
-  //  "name": "Co Co Cola",
-  //  "number": "90",
-  //  "id": 14
-  //},
-  //{
-  //  "name": "James B",
-  //  "number": "9080808",
-  //  "id": 15
-  //}
-]
-
 morgan.token('person', function getPerson(req) {
   return req.person
 })
@@ -102,7 +54,7 @@ app.delete('/api/persons/:id', (request, response, next) => {
     .catch(error => next(error))
 })
 
-app.post('/api/persons', (request, response) => {
+app.post('/api/persons', (request, response, next) => {
   const body = request.body
 
   if (body.name.length === 0) {
@@ -122,9 +74,12 @@ app.post('/api/persons', (request, response) => {
     number: body.number,
   })
 
-  person.save().then(savedPerson => {
-    response.json(savedPerson.toJSON())
-  })
+  person.save()
+    .then(savedPerson => savedPerson.toJSON())
+    .then(savedAndFormattedPerson => {
+      response.json(savedAndFormattedPerson)
+    })
+    .catch(error => next(error))
 })
 
 app.put('/api/persons/:id', (request, response, next) => {
@@ -154,6 +109,8 @@ const errorHandler = (error, request, response, next) => {
 
   if (error.name === 'CastError' && error.kind == 'ObjectId') {
     return response.status(400).send({ error: 'malformatted id' })
+  } else if (error.name === 'ValidationError') {
+    return response.status(400).json({ error: error.message })
   }
 
   next(error)
