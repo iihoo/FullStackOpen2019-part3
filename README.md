@@ -17,3 +17,5 @@ https://secret-castle-09186.herokuapp.com/api/persons
 https://secret-castle-09186.herokuapp.com/api/persons/ID where ID = the id number of a person in the phonebook
 - this page shows one person accorging to the id in the address
 
+# Additional info
+Course exercise for Full Stack Open 2019 course part III.
